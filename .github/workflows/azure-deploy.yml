@@ -1,0 +1,28 @@
+name: Deploy to Azure Static Website
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Azure CLI
+        uses: azure/cli@v2
+
+      - name: Sync files to Azure Storage $web
+        env:
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+        run: |
+          az storage blob sync \
+            --connection-string "$AZURE_STORAGE_CONNECTION_STRING" \
+            --container '$web' \
+            --source . \
+            --exclude-pattern ".git*;.github/*"
