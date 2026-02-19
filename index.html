@@ -1,314 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NBA Oracle - Playoff Predictions</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .container {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      padding: 40px;
-      max-width: 600px;
-      width: 100%;
-    }
-
-    h1 {
-      color: #1a1a1a;
-      margin-bottom: 30px;
-      text-align: center;
-      font-size: 2rem;
-    }
-
-    .predictions-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .prediction-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 8px;
-      padding: 20px;
-      text-align: center;
-      color: white;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .prediction-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-    }
-
-    .team-name {
-      font-weight: 600;
-      font-size: 1.25rem;
-      margin-bottom: 10px;
-    }
-
-    .percentage {
-      font-size: 2.5rem;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .prediction-label {
-      font-size: 0.9rem;
-      opacity: 0.9;
-    }
-
-    .loading {
-      text-align: center;
-      color: #667eea;
-      font-size: 1.1rem;
-    }
-
-    .error {
-      background: #fee;
-      color: #c33;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      border-left: 4px solid #c33;
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-      }
-
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      .predictions-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>NBA Playoff Predictions</h1>
-    <div id="error-container"></div>
-    <div class="predictions-grid" id="predictions-container">
-      <div class="loading">Loading predictions...</div>
-    </div>
-  </div>
-
-  <script>
-    async function loadPredictions() {
-      try {
-        const response = await fetch('predictions.json');
-        if (!response.ok) {
-          throw new Error('Failed to load predictions data');
-        }
-
-        const data = await response.json();
-        const container = document.getElementById('predictions-container');
-        container.innerHTML = '';
-
-        if (Object.keys(data).length === 0) {
-          container.innerHTML = '<p class="loading">No predictions available</p>';
-          return;
-        }
-
-        for (const team in data) {
-          const percentage = Math.round(data[team] * 100);
-          const card = document.createElement('div');
-          card.className = 'prediction-card';
-          card.innerHTML = `
-            <div class="team-name">${team}</div>
-            <div class="percentage">${percentage}%</div>
-            <div class="prediction-label">Playoff Chance</div>
-          `;
-          container.appendChild(card);
-        }
-      } catch (error) {
-        console.error('Error loading predictions:', error);
-        const errorContainer = document.getElementById('error-container');
-        errorContainer.className = 'error';
-        errorContainer.textContent = `Error: ${error.message}. Make sure predictions.json exists in the same directory.`;
-        
-        const container = document.getElementById('predictions-container');
-        container.innerHTML = '';
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', loadPredictions);
-  </script>
-</body>
-</html>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .container {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      padding: 40px;
-      max-width: 600px;
-      width: 100%;
-    }
-
-    h1 {
-      color: #1a1a1a;
-      margin-bottom: 30px;
-      text-align: center;
-      font-size: 2rem;
-    }
-
-    .predictions-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .prediction-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 8px;
-      padding: 20px;
-      text-align: center;
-      color: white;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-    }
-
-    .prediction-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-    }
-
-    .team-name {
-      font-weight: 600;
-      font-size: 1.25rem;
-      margin-bottom: 10px;
-    }
-
-    .percentage {
-      font-size: 2.5rem;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .prediction-label {
-      font-size: 0.9rem;
-      opacity: 0.9;
-    }
-
-    .loading {
-      text-align: center;
-      color: #667eea;
-      font-size: 1.1rem;
-    }
-
-    .error {
-      background: #fee;
-      color: #c33;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      border-left: 4px solid #c33;
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-      }
-
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      .predictions-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>NBA Playoff Predictions</h1>
-    <div id="error-container"></div>
-    <div class="predictions-grid" id="predictions-container">
-      <div class="loading">Loading predictions...</div>
-    </div>
-  </div>
-
-  <script>
-    async function loadPredictions() {
-      try {
-        const response = await fetch('predictions.json');
-        if (!response.ok) {
-          throw new Error('Failed to load predictions data');
-        }
-
-        const data = await response.json();
-        const container = document.getElementById('predictions-container');
-        container.innerHTML = '';
-
-        if (Object.keys(data).length === 0) {
-          container.innerHTML = '<p class="loading">No predictions available</p>';
-          return;
-        }
-
-        for (const team in data) {
-          const percentage = Math.round(data[team] * 100);
-          const card = document.createElement('div');
-          card.className = 'prediction-card';
-          card.innerHTML = `
-            <div class="team-name">${team}</div>
-            <div class="percentage">${percentage}%</div>
-            <div class="prediction-label">Playoff Chance</div>
-          `;
-          container.appendChild(card);
-        }
-      } catch (error) {
-        console.error('Error loading predictions:', error);
-        const errorContainer = document.getElementById('error-container');
-        errorContainer.className = 'error';
-        errorContainer.textContent = `Error: ${error.message}. Make sure predictions.json exists in the same directory.`;
-        
-        const container = document.getElementById('predictions-container');
-        container.innerHTML = '';
-      }
-    }
-
-    // Load predictions when page loads
-    document.addEventListener('DOMContentLoaded', loadPredictions);
-  </script>
-</body>
-</html>
+<!-- redeploy fix -->
+<!-- CI/CD Test: Deployment Working -->
+<!-- saved from url=(0020)https://www.nba.com/ -->
+<html lang="en" data-version="4.104.1" data-theme="NBA"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style id="storyteller-theme">
+:root {
+  
+--storyteller-colors-primary: #1C62EB;
+--storyteller-colors-success: #3bb327;
+--storyteller-colors-alert: #e21219;
+--storyteller-colors-white-primary: #ffffff;
+--storyteller-colors-white-secondary: #ffffffD9;
+--storyteller-colors-white-tertiary: #ffffffB3;
+--storyteller-colors-black-primary: #1a1a1a;
+--storyteller-colors-black-secondary: #1a1a1aD9;
+--storyteller-colors-black-tertiary: #1a1a1aB3;
+--storyteller-font: inherit;
+--storyteller-primitives-corner-radius: 4px;
+--storyteller-row-tile-spacing: 8px;
+--storyteller-row-start-inset: 12px;
+--storyteller-row-end-inset: 12px;
+--storyteller-scroll-indicator-background: white;
+--storyteller-scroll-indicator-color: rgba(26, 26, 26, 0.7);
+--storyteller-grid-tile-spacing: 8px;
+--storyteller-grid-top-inset: 12px;
 --storyteller-grid-bottom-inset: 12px;
 --storyteller-grid-start-inset: 16px;
 --storyteller-grid-end-inset: 16px;
@@ -407,60 +121,83 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-</head>
-<body>
-  <div class="container">
-    <h1>NBA Playoff Predictions</h1>
-    <div id="error-container"></div>
-    <div class="predictions-grid" id="predictions-container">
-      <div class="loading">Loading predictions...</div>
-    </div>
-  </div>
+#onetrust-consent-sdk #onetrust-policy-title, #onetrust-banner-sdk .ot-dpd-title {
+    font-family: 'Knockout 49 Liteweight', "Knockout Wide", sans-serif;
+    font-size: 1.5em;
+    font-weight: normal;
+    line-height: 90%;
+    color: #000000;
+    text-transform: uppercase;
+}
 
-  <script>
-    async function loadPredictions() {
-      try {
-        const response = await fetch('predictions.json');
-        if (!response.ok) {
-          throw new Error('Failed to load predictions data');
-        }
+#onetrust-banner-sdk .ot-sdk-container, #onetrust-pc-sdk .ot-sdk-container, #ot-sdk-cookie-policy .ot-sdk-container {
+    padding: 50px 20px 0 20px;
+}
 
-        const data = await response.json();
-        const container = document.getElementById('predictions-container');
-        container.innerHTML = '';
+#onetrust-consent-sdk #onetrust-banner-sdk {
+    border-radius: 18px 18px 0 0;
+    border: none;
+}
 
-        if (Object.keys(data).length === 0) {
-          container.innerHTML = '<p class="loading">No predictions available</p>';
-          return;
-        }
+#onetrust-consent-sdk #onetrust-policy-text, #onetrust-banner-sdk div  {
+    font-family: 'Roboto', sans-serif; 
+    color: #696969;
+}
 
-        for (const team in data) {
-          const percentage = Math.round(data[team] * 100);
-          const card = document.createElement('div');
-          card.className = 'prediction-card';
-          card.innerHTML = `
-            <div class="team-name">${team}</div>
-            <div class="percentage">${percentage}%</div>
-            <div class="prediction-label">Playoff Chance</div>
-          `;
-          container.appendChild(card);
-        }
-      } catch (error) {
-        console.error('Error loading predictions:', error);
-        const errorContainer = document.getElementById('error-container');
-        errorContainer.className = 'error';
-        errorContainer.textContent = `Error: ${error.message}. Make sure predictions.json exists in the same directory.`;
-        
-        const container = document.getElementById('predictions-container');
-        container.innerHTML = '';
-      }
-    }
+#onetrust-consent-sdk #onetrust-policy-text, #onetrust-banner-sdk p:not([role=heading]) {
+    line-height: 1.5;
+    margin: 5px 0 20px 0
+}
 
-    // Load predictions when page loads
-    document.addEventListener('DOMContentLoaded', loadPredictions);
-  </script>
-</body>
-</html>
+#onetrust-banner-sdk .ot-optout-signal {
+    font-size: .7em;
+    margin-bottom: 20px;
+}
+
+/* Button Modifiers */
+#onetrust-banner-sdk.ot-iab-2 #onetrust-button-group button {
+    border-radius: 5px;
+}
+
+#onetrust-consent-sdk #onetrust-accept-btn-handler, #onetrust-banner-sdk #onetrust-reject-all-handler {
+    background-color: #000000;
+    border-color: #000000;
+    color: #FFFFFF;
+}
+
+#onetrust-consent-sdk #onetrust-pc-btn-handler, #onetrust-consent-sdk #onetrust-pc-btn-handler.cookie-setting-link {
+    color: #000000;
+    border-color: #000000;
+    background-color: #ffffff;
+    text-decoration: none;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#onetrust-banner-sdk.ot-iab-2 .onetrust-vendors-list-handler {
+    margin-top: 0;
+}
+
+/* Mobile-specific Modifiers */
+@media only screen and (max-width: 425px) {
+	#onetrust-banner-sdk #onetrust-group-container {
+		height:400px;
+		overflow-y:auto;
+		margin-bottom: 20px;
+	}
+
+	::-webkit-scrollbar {
+	  width: 6px;
+	}
+	::-webkit-scrollbar-thumb {
+	  background: #eeeeee; 
+	  border-radius: 4px;
+	}
+	#onetrust-consent-sdk #onetrust-banner-sdk {
+		height: 650px;
+	}
+
+	#onetrust-banner-sdk #onetrust-button-group-parent {
 		height: 180px;
 		overflow-x: hidden;
 	}
